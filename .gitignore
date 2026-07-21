@@ -1,0 +1,10 @@
+# Veri seti klasörünü ve büyük dosyaları yok say
+data/
+*.csv
+
+# Python önbellek dosyaları
+__pycache__/
+*.pyc
+
+# Sanal ortam
+venv/
