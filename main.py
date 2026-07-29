@@ -290,6 +290,7 @@ def run_service(config: dict):
 
         try:
             listener.connect()
+            
             emails = listener.fetch_unread_emails(
                 max_count=config["max_emails_per_cycle"]
             )
@@ -341,7 +342,7 @@ if __name__ == "__main__":
         Import edildiğinde run_service() otomatik çalışmamalı —
         bu blok bunu önler.
         
-    Ctrl+C (KeyboardInterrupt) yakalaması:
+    Ctrl+C (KeyboardInterrupt) yakalaması
         Kullanıcı servisi durdurmak istediğinde Python KeyboardInterrupt
         fırlatır. Biz bunu yakalayıp temiz çıkış mesajı veriyoruz
         (panik traceback yerine).
