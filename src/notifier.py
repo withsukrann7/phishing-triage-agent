@@ -372,6 +372,7 @@ def get_notifier(channel: str = "mock", **kwargs):
         )
     """
     if channel == "mock":
+        
         return MockNotifier()
 
     elif channel == "teams":
