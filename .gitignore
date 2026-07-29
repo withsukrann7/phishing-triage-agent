@@ -9,4 +9,7 @@ __pycache__/
 # Sanal ortam
 venv/
 
+#gizli ortam değişkenleri (şifreler, apı key'ler)
 .env
+.env.local
+.env.*.local
