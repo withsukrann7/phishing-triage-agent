@@ -1,21 +1,27 @@
 import os #işletim sistemi ile konuşmamızı sağlayan kütüphane. model dosyalarımız diskte fiziksel olarak duruyor mu değil mi öğreneceğiz.
-import re
-import joblib
+import re #düzenli ifadeleri çağırır, güvenlik süzgeci için 
+import joblib #diskte binary formatta saklanan modelleri okuyup belleğe yükleyen kütüphaneyi çağırır.
 from preprocess import clean_text
 
 # Model ve Vectorizer yolları
-MODEL_PATH = "models/phishing_model.pkl"
+MODEL_PATH = "models/phishing_model.pkl" # sabit değişkenlere attık
 VECTORIZER_PATH = "models/vectorizer.pkl"
 
-class PhishingTriageAgent:
-    def __init__(self):
+class PhishingTriageAgent: 
+    def __init__(self): #yapıcı metotdur. otomatik olarak çalışıcak. 
         print("🤖 Phishing Triage Agent başlatılıyor...")
         if not os.path.exists(MODEL_PATH) or not os.path.exists(VECTORIZER_PATH):
             raise FileNotFoundError("Model veya Vectorizer dosyası bulunamadı! Önce 'python src/train.py' çalıştırın.")
         
-        self.model = joblib.load(MODEL_PATH)
+        self.model = joblib.load(MODEL_PATH) 
         self.vectorizer = joblib.load(VECTORIZER_PATH)
         print("✅ Model ve Vektörleştirici başarıyla yüklendi!\n")
+        """
+        bu satırlar diskteki .pkl dosyalarını okurlar , python nesnesine çevirir 
+        ve sınıfın kendi değişkenlerine self.model ve self.vectorizer atayarak ram'e sabitler.
+        vectorizer : metin kelimelerini sayılara çeviren tercümandır.
+        model : o sayıları inceleyip risk puanı veren hakimdir.
+        """
 
     def analyze_email(self, email_body):
         """
@@ -25,7 +31,7 @@ class PhishingTriageAgent:
         cleaned = clean_text(email_body)
         
         # 2. Vektörleştir ve Tahmin Et
-        features = self.vectorizer.transform([cleaned])
+        features = self.vectorizer.transform([cleaned]) 
         prediction = self.model.predict(features)[0]
         probabilities = self.model.predict_proba(features)[0]
         

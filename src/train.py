@@ -14,7 +14,7 @@ ve görevi biter.
 """
 # Dosya yolları
 DATA_PATH = "data/phishing_email_dataset.csv" #daha düzenli olmasi için.
-MODEL_DIR = "models" #2 dosya model olacağı için klaör yaptik.
+MODEL_DIR = "models" #2 dosya model olacağı için klasör yaptik. 
 
 def train(): 
     print("1. Veri seti yükleniyor...")
