@@ -197,6 +197,40 @@ def process_single_email(email_data: dict, agent: PhishingTriageAgent,
     # Agent analizi (agent.py hiçbir şey bilmiyor — sadece body'yi alıyor)
     report = agent.analyze_email(email_body)
 
+    
+    # --- WEB PANELİ İÇİN CANLI VERİ KAYDI ---
+    import json
+    from datetime import datetime
+
+    # Eğer report değişkenin adı farklıysa aşağıyı ona göre otomatik yakalar:
+    try:
+        report_data = report if 'report' in locals() else (result if 'result' in locals() else {})
+        
+        incident = {
+            "Zaman": datetime.now().strftime("%H:%M:%S"),
+            "Gönderen": str(sender),
+            "Konu": str(subject),
+            "Karar": str(report_data.get("Karar", "ANALİZ EDİLDİ")),
+            "Risk Seviyesi": str(report_data.get("Risk Seviyesi", "DÜŞÜK")),
+            "Güven Skoru": str(report_data.get("Güven Skoru", "%50"))
+        }
+
+        try:
+            with open("incidents.json", "r", encoding="utf-8") as f:
+                incidents_list = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            incidents_list = []
+
+        incidents_list.insert(0, incident)
+
+        with open("incidents.json", "w", encoding="utf-8") as f:
+            json.dump(incidents_list[:50], f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        logger.error(f"JSON kayıt hatası: {e}")
+    
+    # ----------------------------------------
+
+
     risk_level = report.get("Risk Seviyesi", "")
     decision   = report.get("Karar", "")
     confidence = report.get("Güven Skoru", "")
