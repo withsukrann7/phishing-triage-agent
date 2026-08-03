@@ -13,3 +13,6 @@ venv/
 .env
 .env.local
 .env.*.local
+
+
+incidents.json
